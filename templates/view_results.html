@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Exam Results</h2>
+    {% if session['role'] == 'admin' %}
+        <table>
+            <tr>
+                <th>Student</th>
+                <th>Exam Name</th>
+                <th>Score</th>
+                <th>Total Questions</th>
+                <th>Submission Time</th>
+            </tr>
+            {% for result in results %}
+            <tr>
+                <td>{{ result.username }}</td>
+                <td>{{ result.exam_name }}</td>
+                <td>{{ result.score }}</td>
+                <td>{{ result.total_questions }}</td>
+                <td>{{ result.submission_time }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <table>
+            <tr>
+                <th>Exam Name</th>
+                <th>Score</th>
+                <th>Total Questions</th>
+                <th>Submission Time</th>
+            </tr>
+            {% for result in results %}
+            <tr>
+                <td>{{ result.exam_name }}</td>
+                <td>{{ result.score }}</td>
+                <td>{{ result.total_questions }}</td>
+                <td>{{ result.submission_time }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>

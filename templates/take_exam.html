@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Exam</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        // JavaScript for the countdown timer
+        function startTimer(duration) {
+            var timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                document.getElementById('timer').textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    document.getElementById('exam_form').submit(); // Auto-submit form when time is up
+                }
+            }, 1000);
+        }
+
+        window.onload = function () {
+            var duration = {duration}; // Exam duration in seconds
+            startTimer(duration);
+        };
+    </script>
+</head>
+<body>
+    <h2>{{ exam.exam_name }}</h2>
+    <p>Time Remaining: <span id="timer"></span></p>
+
+    <form id="exam_form" action="{{ url_for('take_exam', exam_id=exam.id) }}" method="POST">
+        {% for question in questions %}
+            <div class="question">
+                <p><strong>Q{{ loop.index }}: {{ question.question_text }}</strong></p>
+                <label><input type="radio" name="question_{{ question.id }}" value="A"> {{ question.option_a }}</label><br>
+                <label><input type="radio" name="question_{{ question.id }}" value="B"> {{ question.option_b }}</label><br>
+                <label><input type="radio" name="question_{{ question.id }}" value="C"> {{ question.option_c }}</label><br>
+                <label><input type="radio" name="question_{{ question.id }}" value="D"> {{ question.option_d }}</label><br>
+            </div>
+            <br>
+        {% endfor %}
+        <button type="submit">Submit Exam</button>
+    </form>
+</body>
+</html>
